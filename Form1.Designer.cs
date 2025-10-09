@@ -35,7 +35,13 @@ namespace modbus
             this.labelTensionMoteur = new System.Windows.Forms.Label();
             this.buttonLire = new System.Windows.Forms.Button();
             this.textBoxTension = new System.Windows.Forms.TextBox();
+            this.checkBoxAuto = new System.Windows.Forms.CheckBox();
+            this.buttonLireThermique = new System.Windows.Forms.Button();
+            this.textBoxThermique = new System.Windows.Forms.TextBox();
+            this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
+            this.timer1 = new System.Windows.Forms.Timer();
             this.textBoxStatut = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGraph)).BeginInit();
             this.SuspendLayout();
             
             // labelAdresseIP - étiquette
@@ -99,6 +105,49 @@ namespace modbus
             this.textBoxTension.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBoxTension.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             
+            // checkBoxAuto - case
+            this.checkBoxAuto.AutoSize = true;
+            this.checkBoxAuto.Location = new System.Drawing.Point(12, 75);
+            this.checkBoxAuto.Name = "checkBoxAuto";
+            this.checkBoxAuto.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxAuto.TabIndex = 7;
+            this.checkBoxAuto.Text = "Mode automatique";
+            this.checkBoxAuto.UseVisualStyleBackColor = true;
+            this.checkBoxAuto.CheckedChanged += new System.EventHandler(this.checkBoxAuto_CheckedChanged);
+            
+            // buttonLireThermique - bouton
+            this.buttonLireThermique.Location = new System.Drawing.Point(340, 175);
+            this.buttonLireThermique.Name = "buttonLireThermique";
+            this.buttonLireThermique.Size = new System.Drawing.Size(110, 23);
+            this.buttonLireThermique.TabIndex = 8;
+            this.buttonLireThermique.Text = "Lire Thermique Moteur";
+            this.buttonLireThermique.UseVisualStyleBackColor = true;
+            this.buttonLireThermique.Click += new System.EventHandler(this.buttonLireThermique_Click);
+            
+            // textBoxThermique - affichage
+            this.textBoxThermique.Location = new System.Drawing.Point(460, 175);
+            this.textBoxThermique.Name = "textBoxThermique";
+            this.textBoxThermique.ReadOnly = true;
+            this.textBoxThermique.Size = new System.Drawing.Size(50, 20);
+            this.textBoxThermique.TabIndex = 9;
+            this.textBoxThermique.BackColor = System.Drawing.Color.Green;
+            this.textBoxThermique.ForeColor = System.Drawing.Color.White;
+            this.textBoxThermique.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxThermique.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            
+            // pictureBoxGraph - graphique
+            this.pictureBoxGraph.Location = new System.Drawing.Point(12, 220);
+            this.pictureBoxGraph.Name = "pictureBoxGraph";
+            this.pictureBoxGraph.Size = new System.Drawing.Size(500, 218);
+            this.pictureBoxGraph.TabIndex = 10;
+            this.pictureBoxGraph.BackColor = System.Drawing.Color.White;
+            this.pictureBoxGraph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxGraph.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxGraph_Paint);
+            
+            // timer1 - minuteur
+            this.timer1.Interval = 5000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            
             // textBoxStatut - affichage
             this.textBoxStatut.Location = new System.Drawing.Point(520, 50);
             this.textBoxStatut.Multiline = true;
@@ -113,6 +162,10 @@ namespace modbus
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.textBoxStatut);
+            this.Controls.Add(this.pictureBoxGraph);
+            this.Controls.Add(this.textBoxThermique);
+            this.Controls.Add(this.buttonLireThermique);
+            this.Controls.Add(this.checkBoxAuto);
             this.Controls.Add(this.textBoxTension);
             this.Controls.Add(this.buttonLire);
             this.Controls.Add(this.labelTensionMoteur);
@@ -122,6 +175,7 @@ namespace modbus
             this.Controls.Add(this.labelAdresseIP);
             this.Name = "Form1";
             this.Text = "Barrière Modbus";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGraph)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -135,6 +189,11 @@ namespace modbus
         private System.Windows.Forms.Label labelTensionMoteur;
         private System.Windows.Forms.Button buttonLire;
         private System.Windows.Forms.TextBox textBoxTension;
+        private System.Windows.Forms.CheckBox checkBoxAuto;
+        private System.Windows.Forms.Button buttonLireThermique;
+        private System.Windows.Forms.TextBox textBoxThermique;
+        private System.Windows.Forms.PictureBox pictureBoxGraph;
+        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox textBoxStatut;
     }
 }

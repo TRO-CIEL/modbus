@@ -93,6 +93,8 @@ namespace modbus
     public partial class Form1 : Form
     {
         private CModbus modbus;
+        private List<double> tensionValues = new List<double>();
+        private int pointCount = 0;
         
         public Form1()
         {
@@ -143,6 +145,136 @@ namespace modbus
                 textBoxStatut.Text += "**Exception lors de la lecture tension\r\nMessage : " + ex.Message + "\r\n";
                 textBoxStatut.SelectionStart = textBoxStatut.Text.Length;
                 textBoxStatut.ScrollToCaret();
+            }
+        }
+
+        private void buttonLireThermique_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string res = "";
+                short val = modbus.LireUnMot(3208, ref res);
+                if (res == "ok")
+                {
+                    double thermique = ((ushort)val) / 100.0;
+                    textBoxThermique.Text = string.Format("{0:F1} %", thermique);
+                }
+                else
+                {
+                    textBoxThermique.Text = "Erreur";
+                    textBoxStatut.Text += "**Exception lors de la lecture thermique\r\nMessage : " + res + "\r\n";
+                }
+                textBoxStatut.SelectionStart = textBoxStatut.Text.Length;
+                textBoxStatut.ScrollToCaret();
+            }
+            catch (System.Exception ex)
+            {
+                textBoxThermique.Text = "Erreur";
+                textBoxStatut.Text += "**Exception lors de la lecture thermique\r\nMessage : " + ex.Message + "\r\n";
+                textBoxStatut.SelectionStart = textBoxStatut.Text.Length;
+                textBoxStatut.ScrollToCaret();
+            }
+        }
+
+        private void checkBoxAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxAuto.Checked)
+            {
+                timer1.Start();
+                buttonLire.Enabled = false;
+                buttonLireThermique.Enabled = false;
+                buttonConnexion.Enabled = false;
+                buttonDeconnexion.Enabled = false;
+            }
+            else
+            {
+                timer1.Stop();
+                buttonLire.Enabled = true;
+                buttonLireThermique.Enabled = true;
+                buttonConnexion.Enabled = true;
+                buttonDeconnexion.Enabled = true;
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            string res = "";
+            short val = modbus.LireUnMot(3207, ref res);
+            if (res == "ok")
+            {
+                double tension = ((ushort)val) / 10.0;
+                textBoxTension.Text = string.Format("{0:F1} V", tension);
+                
+                tensionValues.Add(tension);
+                if (tensionValues.Count > 50)
+                {
+                    tensionValues.RemoveAt(0);
+                }
+                pointCount++;
+                pictureBoxGraph.Invalidate();
+                
+                textBoxStatut.Text += string.Format("ok Tension = {0:F1}\r\n", tension);
+            }
+            else
+            {
+                textBoxTension.Text = "Erreur";
+                textBoxStatut.Text += "Erreur lecture automatique\r\n";
+            }
+            
+            short valTherm = modbus.LireUnMot(3208, ref res);
+            if (res == "ok")
+            {
+                double thermique = ((ushort)valTherm) / 100.0;
+                textBoxThermique.Text = string.Format("{0:F1} %", thermique);
+            }
+            
+            textBoxStatut.SelectionStart = textBoxStatut.Text.Length;
+            textBoxStatut.ScrollToCaret();
+        }
+
+        private void pictureBoxGraph_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.Clear(Color.White);
+            
+            if (tensionValues.Count < 2) return;
+            
+            int width = pictureBoxGraph.Width - 40;
+            int height = pictureBoxGraph.Height - 40;
+            int startX = 20;
+            int startY = 20;
+            
+            using (Pen gridPen = new Pen(Color.LightGray))
+            using (Pen axisPen = new Pen(Color.Black))
+            using (Pen linePen = new Pen(Color.Blue, 2))
+            using (Font font = new Font("Arial", 8))
+            using (Brush brush = new SolidBrush(Color.Black))
+            {
+                g.DrawRectangle(axisPen, startX, startY, width, height);
+                
+                for (int i = 0; i <= 4; i++)
+                {
+                    int y = startY + (height * i / 4);
+                    g.DrawLine(gridPen, startX, y, startX + width, y);
+                    double voltage = 245 - (i * 10);
+                    g.DrawString(voltage.ToString(), font, brush, 2, y - 6);
+                }
+                
+                for (int i = 1; i < tensionValues.Count; i++)
+                {
+                    double v1 = tensionValues[i - 1];
+                    double v2 = tensionValues[i];
+                    
+                    int x1 = startX + (width * (i - 1) / (tensionValues.Count - 1));
+                    int y1 = startY + height - (int)((v1 - 205) * height / 40);
+                    int x2 = startX + (width * i / (tensionValues.Count - 1));
+                    int y2 = startY + height - (int)((v2 - 205) * height / 40);
+                    
+                    g.DrawLine(linePen, x1, y1, x2, y2);
+                }
+                
+                g.DrawString("Tension (V)", font, brush, startX + width/2 - 30, 5);
+                g.DrawString("Temps", font, brush, startX + width - 20, startY + height + 5);
             }
         }
     }
