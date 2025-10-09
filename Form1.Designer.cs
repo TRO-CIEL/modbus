@@ -38,6 +38,8 @@ namespace modbus
             this.checkBoxAuto = new System.Windows.Forms.CheckBox();
             this.buttonLireThermique = new System.Windows.Forms.Button();
             this.textBoxThermique = new System.Windows.Forms.TextBox();
+            this.buttonLirePosition = new System.Windows.Forms.Button();
+            this.textBoxPosition = new System.Windows.Forms.TextBox();
             this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer();
             this.textBoxStatut = new System.Windows.Forms.TextBox();
@@ -79,14 +81,14 @@ namespace modbus
             
             // labelTensionMoteur - étiquette
             this.labelTensionMoteur.AutoSize = true;
-            this.labelTensionMoteur.Location = new System.Drawing.Point(335, 120);
+            this.labelTensionMoteur.Location = new System.Drawing.Point(335, 152);
             this.labelTensionMoteur.Name = "labelTensionMoteur";
             this.labelTensionMoteur.Size = new System.Drawing.Size(110, 13);
             this.labelTensionMoteur.TabIndex = 4;
             this.labelTensionMoteur.Text = "Tension moteur en Volt";
             
             // buttonLire - bouton
-            this.buttonLire.Location = new System.Drawing.Point(340, 145);
+            this.buttonLire.Location = new System.Drawing.Point(340, 175);
             this.buttonLire.Name = "buttonLire";
             this.buttonLire.Size = new System.Drawing.Size(50, 23);
             this.buttonLire.TabIndex = 5;
@@ -95,7 +97,7 @@ namespace modbus
             this.buttonLire.Click += new System.EventHandler(this.buttonLire_Click);
             
             // textBoxTension - affichage
-            this.textBoxTension.Location = new System.Drawing.Point(400, 145);
+            this.textBoxTension.Location = new System.Drawing.Point(400, 175);
             this.textBoxTension.Name = "textBoxTension";
             this.textBoxTension.ReadOnly = true;
             this.textBoxTension.Size = new System.Drawing.Size(80, 20);
@@ -116,16 +118,36 @@ namespace modbus
             this.checkBoxAuto.CheckedChanged += new System.EventHandler(this.checkBoxAuto_CheckedChanged);
             
             // buttonLireThermique - bouton
-            this.buttonLireThermique.Location = new System.Drawing.Point(340, 175);
+            this.buttonLireThermique.Location = new System.Drawing.Point(340, 205);
             this.buttonLireThermique.Name = "buttonLireThermique";
             this.buttonLireThermique.Size = new System.Drawing.Size(110, 23);
             this.buttonLireThermique.TabIndex = 8;
-            this.buttonLireThermique.Text = "Lire Thermique Moteur";
+            this.buttonLireThermique.Text = "Lire Thermique";
             this.buttonLireThermique.UseVisualStyleBackColor = true;
             this.buttonLireThermique.Click += new System.EventHandler(this.buttonLireThermique_Click);
             
+            // buttonLirePosition - bouton
+            this.buttonLirePosition.Location = new System.Drawing.Point(340, 235);
+            this.buttonLirePosition.Name = "buttonLirePosition";
+            this.buttonLirePosition.Size = new System.Drawing.Size(110, 23);
+            this.buttonLirePosition.TabIndex = 11;
+            this.buttonLirePosition.Text = "Lire Position";
+            this.buttonLirePosition.UseVisualStyleBackColor = true;
+            this.buttonLirePosition.Click += new System.EventHandler(this.buttonLirePosition_Click);
+            
+            // textBoxPosition - affichage
+            this.textBoxPosition.Location = new System.Drawing.Point(460, 235);
+            this.textBoxPosition.Name = "textBoxPosition";
+            this.textBoxPosition.ReadOnly = true;
+            this.textBoxPosition.Size = new System.Drawing.Size(50, 20);
+            this.textBoxPosition.TabIndex = 12;
+            this.textBoxPosition.BackColor = System.Drawing.Color.Orange;
+            this.textBoxPosition.ForeColor = System.Drawing.Color.White;
+            this.textBoxPosition.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            
             // textBoxThermique - affichage
-            this.textBoxThermique.Location = new System.Drawing.Point(460, 175);
+            this.textBoxThermique.Location = new System.Drawing.Point(460, 205);
             this.textBoxThermique.Name = "textBoxThermique";
             this.textBoxThermique.ReadOnly = true;
             this.textBoxThermique.Size = new System.Drawing.Size(50, 20);
@@ -136,9 +158,9 @@ namespace modbus
             this.textBoxThermique.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             
             // pictureBoxGraph - graphique
-            this.pictureBoxGraph.Location = new System.Drawing.Point(12, 220);
+            this.pictureBoxGraph.Location = new System.Drawing.Point(12, 270);
             this.pictureBoxGraph.Name = "pictureBoxGraph";
-            this.pictureBoxGraph.Size = new System.Drawing.Size(500, 218);
+            this.pictureBoxGraph.Size = new System.Drawing.Size(500, 168);
             this.pictureBoxGraph.TabIndex = 10;
             this.pictureBoxGraph.BackColor = System.Drawing.Color.White;
             this.pictureBoxGraph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -163,6 +185,8 @@ namespace modbus
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.textBoxStatut);
             this.Controls.Add(this.pictureBoxGraph);
+            this.Controls.Add(this.textBoxPosition);
+            this.Controls.Add(this.buttonLirePosition);
             this.Controls.Add(this.textBoxThermique);
             this.Controls.Add(this.buttonLireThermique);
             this.Controls.Add(this.checkBoxAuto);
@@ -192,6 +216,8 @@ namespace modbus
         private System.Windows.Forms.CheckBox checkBoxAuto;
         private System.Windows.Forms.Button buttonLireThermique;
         private System.Windows.Forms.TextBox textBoxThermique;
+        private System.Windows.Forms.Button buttonLirePosition;
+        private System.Windows.Forms.TextBox textBoxPosition;
         private System.Windows.Forms.PictureBox pictureBoxGraph;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox textBoxStatut;

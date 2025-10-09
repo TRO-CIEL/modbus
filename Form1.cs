@@ -183,6 +183,7 @@ namespace modbus
                 timer1.Start();
                 buttonLire.Enabled = false;
                 buttonLireThermique.Enabled = false;
+                buttonLirePosition.Enabled = false;
                 buttonConnexion.Enabled = false;
                 buttonDeconnexion.Enabled = false;
             }
@@ -191,6 +192,7 @@ namespace modbus
                 timer1.Stop();
                 buttonLire.Enabled = true;
                 buttonLireThermique.Enabled = true;
+                buttonLirePosition.Enabled = true;
                 buttonConnexion.Enabled = true;
                 buttonDeconnexion.Enabled = true;
             }
@@ -228,8 +230,51 @@ namespace modbus
                 textBoxThermique.Text = string.Format("{0:F1} %", thermique);
             }
             
+            short valPos = modbus.LireUnMot(3209, ref res);
+            if (res == "ok")
+            {
+                double angle = CalculerAngle((ushort)valPos);
+                textBoxPosition.Text = string.Format("{0:F1}°", angle);
+            }
+            
             textBoxStatut.SelectionStart = textBoxStatut.Text.Length;
             textBoxStatut.ScrollToCaret();
+        }
+
+        private void buttonLirePosition_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string res = "";
+                short val = modbus.LireUnMot(3209, ref res);
+                if (res == "ok")
+                {
+                    double angle = CalculerAngle((ushort)val);
+                    textBoxPosition.Text = string.Format("{0:F1}°", angle);
+                }
+                else
+                {
+                    textBoxPosition.Text = "Erreur";
+                    textBoxStatut.Text += "**Exception lors de la lecture position\r\nMessage : " + res + "\r\n";
+                }
+                textBoxStatut.SelectionStart = textBoxStatut.Text.Length;
+                textBoxStatut.ScrollToCaret();
+            }
+            catch (System.Exception ex)
+            {
+                textBoxPosition.Text = "Erreur";
+                textBoxStatut.Text += "**Exception lors de la lecture position\r\nMessage : " + ex.Message + "\r\n";
+                textBoxStatut.SelectionStart = textBoxStatut.Text.Length;
+                textBoxStatut.ScrollToCaret();
+            }
+        }
+
+        private double CalculerAngle(ushort position)
+        {
+            double pos0 = 0;
+            double pos90 = 16383;
+            double angle = (position - pos0) * 90.0 / (pos90 - pos0);
+            return Math.Max(0, Math.Min(90, angle));
         }
 
         private void pictureBoxGraph_Paint(object sender, PaintEventArgs e)
